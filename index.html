@@ -1,27 +1,15 @@
-<!doctype html>
-<html lang= "ja">
-  <head>
-    <meta charset="ut-8">
-    <title>タイトル</title>
-  </head>  
-  <body>
-    テスト
-    chenged
-    HelloWorld
-    もう一回書き換えます
-    <p coloer:red ></p>
-
-    @w@
-    <p style="color: pink;" >ピンク</p>
-    <p style="color: blue;" >青</p>
-    <p style="color: green;" >緑</p>
-    <p style="color: yellow;" >黄色</p>
-    <p style="color: orange;" >オレンジ</p>
-    <p style="color: purple;" >紫</p>
-    <p style="color: black;" >黒</p>
-    <p style="color: burlywood;">変な色</p>
-
-
-
-  </body>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HTML5 Tetris</title>
+        <link rel='stylesheet' href='style.css' />
+    </head>
+    <body>
+        <audio id="clearsound" src="sound/pop.ogg" preload="auto"></audio>
+        <canvas width='300' height='600'></canvas>
+        <button id="playbutton" onclick="playButtonClicked();">Play</button>
+        <script src='js/tetris.js'></script>
+        <script src='js/controller.js'></script>
+        <script src='js/render.js'></script>
+    </body>
 </html>
