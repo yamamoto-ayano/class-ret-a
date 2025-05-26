@@ -16,8 +16,18 @@ function render() {
     ctx.strokeStyle = 'black';
     for ( var x = 0; x < COLS; ++x ) {
         for ( var y = 0; y < ROWS; ++y ) {
+            var isClearing = (typeof clearingRows !== 'undefined' && clearingRows.indexOf(y) !== -1);
             if ( board[ y ][ x ] ) {
-                ctx.fillStyle = colors[ board[ y ][ x ] - 1 ];
+                if (isClearing) {
+                    // 点滅アニメーション: フレームごとに透明/白/元色を切り替え
+                    if (clearAnimFrame % 2 === 0) {
+                        ctx.fillStyle = 'white';
+                    } else {
+                        ctx.fillStyle = colors[ board[ y ][ x ] - 1 ];
+                    }
+                } else {
+                    ctx.fillStyle = colors[ board[ y ][ x ] - 1 ];
+                }
                 drawBlock( x, y );
             }
         }

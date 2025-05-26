@@ -25,6 +25,11 @@ var colors = [
     'cyan', 'orange', 'blue', 'yellow', 'red', 'lime', 'purple'
 ];
 
+// アニメーション用の変数を追加
+var clearingRows = [];
+var clearAnimFrame = 0;
+var CLEAR_ANIM_FRAMES = 8; // アニメーションのフレーム数
+
 // creates a new 4x4 shape in global variable 'current'
 // 4x4 so as to cover the size when the shape is rotated
 function newShape() {
@@ -107,6 +112,7 @@ function rotate( current ) {
 
 // check if any lines are filled and clear them
 function clearLines() {
+    clearingRows = [];
     for ( var y = ROWS - 1; y >= 0; --y ) {
         var rowFilled = true;
         for ( var x = 0; x < COLS; ++x ) {
@@ -116,14 +122,47 @@ function clearLines() {
             }
         }
         if ( rowFilled ) {
-            document.getElementById( 'clearsound' ).play();
+            clearingRows.push(y);
+        }
+    }
+    if (clearingRows.length > 0) {
+        document.getElementById( 'clearsound' ).play();
+        clearAnimFrame = 0;
+        animateClearRows();
+        return; // アニメーション後に本消去
+    } else {
+        // 通常の処理
+        for (var i = 0; i < clearingRows.length; ++i) {
+            var y = clearingRows[i];
             for ( var yy = y; yy > 0; --yy ) {
                 for ( var x = 0; x < COLS; ++x ) {
                     board[ yy ][ x ] = board[ yy - 1 ][ x ];
                 }
             }
-            ++y;
         }
+    }
+}
+
+function animateClearRows() {
+    clearAnimFrame++;
+    render();
+    if (clearAnimFrame < CLEAR_ANIM_FRAMES) {
+        setTimeout(animateClearRows, 40);
+    } else {
+        // 実際に消す
+        for (var i = 0; i < clearingRows.length; ++i) {
+            var y = clearingRows[i];
+            for ( var yy = y; yy > 0; --yy ) {
+                for ( var x = 0; x < COLS; ++x ) {
+                    board[ yy ][ x ] = board[ yy - 1 ][ x ];
+                }
+            }
+            for (var x = 0; x < COLS; ++x) {
+                board[0][x] = 0;
+            }
+        }
+        clearingRows = [];
+        render();
     }
 }
 
@@ -148,6 +187,13 @@ function keyPress( key ) {
             var rotated = rotate( current );
             if ( valid( 0, 0, rotated ) ) {
                 current = rotated;
+            }
+            break;
+        case 'rotateL':
+            // 左回転（時計回りの逆）: 3回右回転で実現
+            var rotatedL = rotate(rotate(rotate(current)));
+            if ( valid( 0, 0, rotatedL ) ) {
+                current = rotatedL;
             }
             break;
         case 'drop':
