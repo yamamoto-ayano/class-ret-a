@@ -22,7 +22,7 @@ var shapes = [
       1, 1, 1 ]
 ];
 var colors = [
-    'cyan', 'orange', 'blue', 'yellow', 'red', 'lime', 'purple'
+    'skyblue', 'orange', 'blue', 'yellow', 'red', 'lime', 'purple'
 ];
 
 // アニメーション用の変数を追加
