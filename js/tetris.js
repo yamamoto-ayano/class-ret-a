@@ -30,10 +30,17 @@ var clearingRows = [];
 var clearAnimFrame = 0;
 var CLEAR_ANIM_FRAMES = 8; // アニメーションのフレーム数
 
+var nextShape = null;
+
 // creates a new 4x4 shape in global variable 'current'
 // 4x4 so as to cover the size when the shape is rotated
 function newShape() {
-    var id = Math.floor( Math.random() * shapes.length );
+    var id;
+    if (nextShape === null) {
+        id = Math.floor( Math.random() * shapes.length );
+    } else {
+        id = nextShape;
+    }
     var shape = shapes[ id ]; // maintain id for color filling
 
     current = [];
@@ -49,10 +56,9 @@ function newShape() {
             }
         }
     }
-    
-    // new shape starts to move
+    // 次のブロックを決めておく
+    nextShape = Math.floor( Math.random() * shapes.length );
     freezed = false;
-    // position where the shape will evolve
     currentX = 5;
     currentY = 0;
 }
